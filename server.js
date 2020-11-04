@@ -1,6 +1,5 @@
-
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
+const projectData = {};
 
 // Require Express to run server and routes
 const express = require('express');
@@ -20,6 +19,18 @@ app.use(cors());
 // Initialize the main project folder
 app.use(express.static('website'));
 
-app.listen(port, () => {
-  console.log('Listening on port:'+port);
-});
+
+app.get('/weather', getData);
+function getData(req, res){
+  res.send(projectData);
+}
+
+app.post('/weather', postData);
+function postData(req, res){
+  projectData.temperature = req.body.temperature;
+  projectData.date = req.body.date;
+  projectData.input = req.body.input;
+  res.send(projectData);
+}
+
+app.listen(port, console.log('Listening on port:'+port));
